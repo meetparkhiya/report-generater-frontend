@@ -3,8 +3,7 @@ import { FolderOff } from '@mui/icons-material';
 import ReportCard from './ReportCard';
 
 const ReportList = ({ reports }) => {
-    console.log("reportsreports",reports);
-    
+
     if (reports.length === 0) {
         return (
             <Box

@@ -34,7 +34,7 @@ export default function Template() {
         formData.append("template", file); // Word template
         formData.append("tasks", JSON.stringify(tasksa));
 
-        const res = await axios.post("http://localhost:5000/generate-word", formData, {
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/generate-word`, formData, {
             responseType: "blob",
         });
 
@@ -55,7 +55,6 @@ export default function Template() {
 
             // Assuming tasks are in "Name | Date" format, one per line
             const lines = text.split("\n").filter(Boolean);
-            console.log("📋 Parsed Tasks:", lines);
 
             const parsedTasks = lines.map((line) => {
                 const [Name, DateStr] = line.split("|").map((x) => x.trim());

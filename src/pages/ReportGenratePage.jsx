@@ -13,11 +13,9 @@ const ReportGenratePage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reports, setReports] = useState([]);
 
-    console.log("reportsreports", reports);
-
 
     const fetchReportList = async () => {
-        const response = await fetch('http://localhost:5000/reports', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/reports`, {
             method: 'GET'
         });
 
@@ -25,9 +23,6 @@ const ReportGenratePage = () => {
             const data = await response.json();
             setReports(data?.reports)
         }
-
-
-        console.log("response", response);
 
     }
 
@@ -62,10 +57,6 @@ const ReportGenratePage = () => {
         });
     }, [reports, searchQuery]);
 
-
-
-    console.log("filteredReportsfilteredReportsfilteredReports", filteredReports);
-    console.log("searchQuerysearchQuery", searchQuery);
 
     return (
         // <ThemeProvider >

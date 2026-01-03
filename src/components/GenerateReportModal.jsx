@@ -153,8 +153,6 @@ const GenerateReportModal = ({ open, onClose, fetchReportList }) => {
             }
         });
 
-        console.log("sheetsDatasheetsData", sheetsData);
-
         setAllSheetData(sheetsData);
         return { sheetCount: Object.keys(sheetsData).length, totalRows, sheetsData };
     };
@@ -279,12 +277,12 @@ const GenerateReportModal = ({ open, onClose, fetchReportList }) => {
                     taskText = "Saturday Holiday";
                     hasTask = true;
                 } else {
-                    const matchingSheet = Object.keys(allSheetData).find(sheetName => {
+                    const matchingSheet = Object.keys(allSheetData || dataLoaded?.sheetsData).find(sheetName => {
                         return sheetName.includes(dateInfo.date) || sheetName === dateInfo.date;
                     });
 
                     if (matchingSheet) {
-                        const sheetData = allSheetData[matchingSheet];
+                        const sheetData = allSheetData[matchingSheet] || dataLoaded?.sheetsData[matchingSheet];
 
                         if (matchingSheet.toLowerCase().includes('holiday')) {
                             taskText = "🎉 Holiday";
@@ -325,14 +323,13 @@ const GenerateReportModal = ({ open, onClose, fetchReportList }) => {
                 wordData[`d${i}`] = "";
             }
 
-
             const formData = new FormData();
             formData.append('data', JSON.stringify(wordData));
             formData.append('employeeName', employeeName);
             formData.append('month', monthName);
             formData.append('year', year);
             const res = await fetch(
-                "http://localhost:5000/generate-word-from-excel",
+                `${process.env.REACT_APP_API_URL}/generate-word-from-excel`,
                 {
                     method: "POST",
                     body: formData,

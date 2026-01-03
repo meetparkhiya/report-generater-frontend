@@ -161,8 +161,6 @@ export default function ExcelToWordApp() {
             }
         });
 
-        console.log("sheetsDatasheetsData", sheetsData);
-
         setAllSheetData(sheetsData);
         return { sheetCount: Object.keys(sheetsData).length, totalRows, sheetsData };
     };
@@ -238,7 +236,6 @@ export default function ExcelToWordApp() {
 
         // Wait a moment for data to be set
         await new Promise(resolve => setTimeout(resolve, 500));
-        console.log("dataLoadeddataLoaded", dataLoaded);
 
         if (Object.keys(dataLoaded?.sheetsData || allSheetData).length === 0) {
             setError("Failed to load data. Please try again!");

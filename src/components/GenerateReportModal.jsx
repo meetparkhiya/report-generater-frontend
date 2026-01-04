@@ -277,12 +277,17 @@ const GenerateReportModal = ({ open, onClose, fetchReportList }) => {
                     taskText = "Saturday Holiday";
                     hasTask = true;
                 } else {
-                    const matchingSheet = Object.keys(allSheetData || dataLoaded?.sheetsData).find(sheetName => {
+                    const sheetSource =
+                        allSheetData && Object.keys(allSheetData).length > 0
+                            ? allSheetData
+                            : dataLoaded?.sheetsData || {};
+
+                    const matchingSheet = Object.keys(sheetSource).find(sheetName => {
                         return sheetName.includes(dateInfo.date) || sheetName === dateInfo.date;
                     });
 
                     if (matchingSheet) {
-                        const sheetData = allSheetData[matchingSheet] || dataLoaded?.sheetsData[matchingSheet];
+                        const sheetData = sheetSource[matchingSheet];
 
                         if (matchingSheet.toLowerCase().includes('holiday')) {
                             taskText = "🎉 Holiday";
@@ -323,11 +328,18 @@ const GenerateReportModal = ({ open, onClose, fetchReportList }) => {
                 wordData[`d${i}`] = "";
             }
 
+            const now = new Date();
+
+            // DD-MM-YYYY format
+            const generatedDate = `${String(now.getDate()).padStart(2, "0")}-${String(
+                now.getMonth() + 1
+            ).padStart(2, "0")}-${now.getFullYear()}`;
             const formData = new FormData();
             formData.append('data', JSON.stringify(wordData));
             formData.append('employeeName', employeeName);
             formData.append('month', monthName);
             formData.append('year', year);
+            formData.append("generatedDate", generatedDate);
             const res = await fetch(
                 `${process.env.REACT_APP_API_URL}/generate-word-from-excel`,
                 {
